@@ -1,0 +1,5 @@
+numpy==1.26.4
+onnxruntime==1.23.2
+opencv-python==4.11.0.86
+paho-mqtt==2.1.0
+scipy==1.15.2
