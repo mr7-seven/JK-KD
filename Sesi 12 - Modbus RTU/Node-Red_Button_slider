@@ -1,0 +1,297 @@
+<template>
+  <div class="panel">
+
+    <!-- CHANNEL 1 -->
+    <div class="channel-card">
+
+      <div class="channel-title">
+        CHANNEL 1
+      </div>
+
+      <div class="switch-area">
+
+        <label class="switch">
+          <input type="checkbox" v-model="ch1.sw" @change="sendData">
+          <span class="slider-switch"></span>
+        </label>
+
+        <div class="status">
+          {{ ch1.sw ? 'ON' : 'OFF' }}
+        </div>
+
+      </div>
+
+      <div class="slider-header">
+        <span>PWM</span>
+        <span>{{ ch1.pwm }}</span>
+      </div>
+
+      <input
+        type="range"
+        min="1"
+        max="255"
+        v-model="ch1.pwm"
+        @mouseup="sendData"
+        @touchend="sendData"
+        class="slider"
+      >
+
+    </div>
+
+    <!-- CHANNEL 2 -->
+    <div class="channel-card">
+
+      <div class="channel-title">
+        CHANNEL 2
+      </div>
+
+      <div class="switch-area">
+
+        <label class="switch">
+          <input type="checkbox" v-model="ch2.sw" @change="sendData">
+          <span class="slider-switch"></span>
+        </label>
+
+        <div class="status">
+          {{ ch2.sw ? 'ON' : 'OFF' }}
+        </div>
+
+      </div>
+
+      <div class="slider-header">
+        <span>PWM</span>
+        <span>{{ ch2.pwm }}</span>
+      </div>
+
+      <input
+        type="range"
+        min="1"
+        max="255"
+        v-model="ch2.pwm"
+        @mouseup="sendData"
+        @touchend="sendData"
+        class="slider"
+      >
+
+    </div>
+
+    <!-- CHANNEL 3 -->
+    <div class="channel-card">
+
+      <div class="channel-title">
+        CHANNEL 3
+      </div>
+
+      <div class="switch-area">
+
+        <label class="switch">
+          <input type="checkbox" v-model="ch3.sw" @change="sendData">
+          <span class="slider-switch"></span>
+        </label>
+
+        <div class="status">
+          {{ ch3.sw ? 'ON' : 'OFF' }}
+        </div>
+
+      </div>
+
+      <div class="slider-header">
+        <span>PWM</span>
+        <span>{{ ch3.pwm }}</span>
+      </div>
+
+      <input
+        type="range"
+        min="1"
+        max="255"
+        v-model="ch3.pwm"
+        @mouseup="sendData"
+        @touchend="sendData"
+        class="slider"
+      >
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+  export default {
+
+  data() {
+    return {
+
+      ch1: {
+        sw: false,
+        pwm: 100
+      },
+
+      ch2: {
+        sw: false,
+        pwm: 120
+      },
+
+      ch3: {
+        sw: false,
+        pwm: 150
+      }
+
+    }
+  },
+
+  methods: {
+
+    sendData() {
+
+      this.send({
+
+        payload: {
+
+          ch1: {
+            sw: this.ch1.sw,
+            pwm: Number(this.ch1.pwm)
+          },
+
+          ch2: {
+            sw: this.ch2.sw,
+            pwm: Number(this.ch2.pwm)
+          },
+
+          ch3: {
+            sw: this.ch3.sw,
+            pwm: Number(this.ch3.pwm)
+          }
+
+        }
+
+      })
+
+    }
+
+  }
+
+}
+</script>
+
+<style>
+  .panel {
+    display: flex;
+    gap: 15px;
+
+    width: 100%;
+  }
+
+  /* CARD */
+  .channel-card {
+    flex: 1;
+
+    background: #1e293b;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    color: white;
+
+    box-shadow:
+      inset 0 0 8px rgba(255, 255, 255, 0.05),
+      0 4px 12px rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* TITLE */
+  .channel-title {
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    opacity: 0.9;
+  }
+
+  /* SWITCH */
+  .switch-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 10px;
+  }
+
+  .switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider-switch {
+    position: absolute;
+    inset: 0;
+
+    cursor: pointer;
+
+    background: #7f1d1d;
+
+    border-radius: 30px;
+
+    transition: 0.3s;
+  }
+
+  .slider-switch:before {
+    content: "";
+
+    position: absolute;
+
+    width: 24px;
+    height: 24px;
+
+    left: 3px;
+    top: 3px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    transition: 0.3s;
+  }
+
+  .switch input:checked+.slider-switch {
+    background: #16a34a;
+
+    box-shadow:
+      0 0 10px rgba(0, 255, 0, 0.7);
+  }
+
+  .switch input:checked+.slider-switch:before {
+    transform: translateX(30px);
+  }
+
+  .status {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  /* SLIDER */
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 13px;
+  }
+
+  .slider {
+    width: 100%;
+    cursor: pointer;
+  }
+</style>
