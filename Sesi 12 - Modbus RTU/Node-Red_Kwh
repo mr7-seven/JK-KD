@@ -1,0 +1,89 @@
+<template>
+  <div class="scada-container">
+
+    <div class="scada-card voltage">
+      <div class="title">TEGANGAN</div>
+      <div class="value">{{msg.payload.tegangan}}</div>
+      <div class="unit">Volt</div>
+    </div>
+
+    <div class="scada-card current">
+      <div class="title">ARUS</div>
+      <div class="value">{{msg.payload.arus}}</div>
+      <div class="unit">Ampere</div>
+    </div>
+
+    <div class="scada-card power">
+      <div class="title">DAYA</div>
+      <div class="value">{{msg.payload.daya}}</div>
+      <div class="unit">Watt</div>
+    </div>
+
+  </div>
+</template>
+
+<style>
+.scada-container{
+    display:flex;
+    gap:12px;
+    width:100%;
+    height:100%;
+    align-items:stretch;
+}
+
+.scada-card{
+    flex:1;
+    background:#1e293b;
+    border-radius:12px;
+    padding:15px;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    min-height:120px;
+
+    box-shadow:
+      inset 0 0 10px rgba(255,255,255,0.05),
+      0 4px 10px rgba(0,0,0,0.4);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:0.3s;
+}
+
+.scada-card:hover{
+    transform:translateY(-2px);
+}
+
+.title{
+    font-size:14px;
+    letter-spacing:1px;
+    opacity:0.7;
+    margin-bottom:10px;
+}
+
+.value{
+    font-size:36px;
+    font-weight:bold;
+    line-height:1;
+}
+
+.unit{
+    margin-top:8px;
+    font-size:14px;
+    opacity:0.8;
+}
+
+.voltage{
+    border-top:4px solid #00bcd4;
+}
+
+.current{
+    border-top:4px solid #4caf50;
+}
+
+.power{
+    border-top:4px solid #ff9800;
+}
+</style>
