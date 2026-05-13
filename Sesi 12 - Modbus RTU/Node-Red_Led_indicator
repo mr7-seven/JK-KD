@@ -1,0 +1,112 @@
+<template>
+  <div class="indicator-panel">
+
+    <div 
+      class="pilot-lamp"
+      :class="msg.payload ? 'lamp-on' : 'lamp-off'"
+    >
+      <div class="lamp-inner"></div>
+    </div>
+
+    <div class="status-text">
+      {{ msg.payload ? 'SYSTEM RUNNING' : 'SYSTEM STOP' }}
+    </div>
+
+  </div>
+</template>
+
+<style>
+.indicator-panel{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:10px;
+}
+
+/* BODY LAMP */
+.pilot-lamp{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+
+    position:relative;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#2b2b2b;
+
+    border:4px solid #666;
+
+    box-shadow:
+      inset 0 4px 8px rgba(255,255,255,0.15),
+      inset 0 -6px 10px rgba(0,0,0,0.5),
+      0 4px 12px rgba(0,0,0,0.5);
+
+    transition:all 0.3s ease;
+}
+
+/* INNER LAMP */
+.lamp-inner{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+
+    transition:all 0.3s ease;
+}
+
+/* ON STATE */
+.lamp-on .lamp-inner{
+    background:radial-gradient(circle at 30% 30%,
+        #7dff7d,
+        #00cc00 60%,
+        #006400 100%);
+
+    box-shadow:
+      0 0 10px #00ff00,
+      0 0 20px #00ff00,
+      0 0 40px rgba(0,255,0,0.8);
+
+    animation:pulse 1.5s infinite;
+}
+
+/* OFF STATE */
+.lamp-off .lamp-inner{
+    background:radial-gradient(circle at 30% 30%,
+        #ff8080,
+        #cc0000 60%,
+        #5c0000 100%);
+
+    box-shadow:
+      inset 0 0 10px rgba(255,255,255,0.2),
+      0 0 8px rgba(255,0,0,0.4);
+}
+
+/* TEXT */
+.status-text{
+    margin-top:12px;
+
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:1px;
+
+    color:#e0e0e0;
+}
+
+/* PULSE EFFECT */
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.05);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+</style>
