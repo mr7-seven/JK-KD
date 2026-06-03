@@ -1,0 +1,303 @@
+[
+    {
+        "id": "477d9d4af4dd047a",
+        "type": "tab",
+        "label": "COUNTER",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "af477f33d4715e3c",
+        "type": "modbus-read",
+        "z": "477d9d4af4dd047a",
+        "name": "",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "0",
+        "quantity": "2",
+        "rate": "1000",
+        "rateUnit": "ms",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "2ec8a94148bd7133",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "x": 370,
+        "y": 200,
+        "wires": [
+            [
+                "3a658fe8d4f9bf21",
+                "8d68c21650184fe3"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3a658fe8d4f9bf21",
+        "type": "modbus-response",
+        "z": "477d9d4af4dd047a",
+        "name": "",
+        "registerShowMax": 20,
+        "x": 590,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "8d68c21650184fe3",
+        "type": "function",
+        "z": "477d9d4af4dd047a",
+        "name": "RISING EDGE",
+        "func": "let value = msg.payload[0];\nlet state = value;\n\nlet prev = flow.get('prev') || false;\n\nif(state && !prev){\n    if(value ===128){\n        let small = flow.get('small') || 0;\n        small++;\n        flow.set('small', small);\n\n        msg.topic = 'small';\n        msg.payload = small;\n    }\n    else     if(value === 192){\n        let big = flow.get('big') || 0;\n        big++;\n        flow.set('big', big);\n\n        msg.topic = 'big';\n        msg.payload = big;\n    }\n\n    flow.set('prev', state);\n    return msg;\n}\n    flow.set('prev', state);\n    return null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 280,
+        "wires": [
+            [
+                "1701ec5dbce93d06",
+                "3259e8743c09e910",
+                "b5443364cc6f3442"
+            ]
+        ]
+    },
+    {
+        "id": "1701ec5dbce93d06",
+        "type": "debug",
+        "z": "477d9d4af4dd047a",
+        "name": "LOG",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4345e36ac00a0f8c",
+        "type": "ui-text",
+        "z": "477d9d4af4dd047a",
+        "group": "c385017d749fed02",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "SMALL",
+        "label": "SMALL",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": true,
+        "className": "",
+        "x": 940,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "3259e8743c09e910",
+        "type": "function",
+        "z": "477d9d4af4dd047a",
+        "name": "SMALL",
+        "func": "msg.payload = flow.get('small') || 0;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 240,
+        "wires": [
+            [
+                "4345e36ac00a0f8c"
+            ]
+        ]
+    },
+    {
+        "id": "b5443364cc6f3442",
+        "type": "function",
+        "z": "477d9d4af4dd047a",
+        "name": "BIG",
+        "func": "msg.payload = flow.get('big') || 0;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 320,
+        "wires": [
+            [
+                "ba6054381cd1fb61"
+            ]
+        ]
+    },
+    {
+        "id": "ba6054381cd1fb61",
+        "type": "ui-text",
+        "z": "477d9d4af4dd047a",
+        "group": "c385017d749fed02",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "BIG",
+        "label": "BIG",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": true,
+        "className": "",
+        "x": 930,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "2ec8a94148bd7133",
+        "type": "modbus-client",
+        "name": "TCP_localhost",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "192.168.241.223",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 1000,
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": 2000,
+        "parallelUnitIdsAllowed": true,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": true
+    },
+    {
+        "id": "c385017d749fed02",
+        "type": "ui-group",
+        "name": "count",
+        "page": "4eb7a7e5bb13d2c3",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "4eb7a7e5bb13d2c3",
+        "type": "ui-page",
+        "name": "counter",
+        "ui": "0df8b8a20bb13f1b",
+        "path": "/page7",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "9080d5e37181d534",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 7,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "0df8b8a20bb13f1b",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "showPageTitle": true,
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true
+    },
+    {
+        "id": "9080d5e37181d534",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "8857bd64543dfe3d",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-modbus": "5.43.0",
+            "@flowfuse/node-red-dashboard": "1.20.0"
+        }
+    }
+]
